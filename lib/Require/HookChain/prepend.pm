@@ -23,6 +23,8 @@ sub Require::HookChain::prepend::INC {
 1;
 # ABSTRACT: Prepend source code to module
 
+=for Pod::Coverage .+
+
 =head1 SYNOPSIS
 
  use Require::HookChain prepend => 'use strict';
