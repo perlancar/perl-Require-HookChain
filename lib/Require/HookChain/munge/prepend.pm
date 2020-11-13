@@ -1,6 +1,8 @@
-package Require::HookChain::prepend;
+package Require::HookChain::munge::prepend;
 
+# AUTHORITY
 # DATE
+# DIST
 # VERSION
 
 sub new {
@@ -8,7 +10,7 @@ sub new {
     bless { preamble => $preamble }, $class;
 }
 
-sub Require::HookChain::prepend::INC {
+sub Require::HookChain::munge::prepend::INC {
     my ($self, $r) = @_;
 
     # safety, in case we are not called by Require::HookChain
@@ -21,13 +23,13 @@ sub Require::HookChain::prepend::INC {
 }
 
 1;
-# ABSTRACT: Prepend source code to module
+# ABSTRACT: Prepend a piece of code to module source
 
 =for Pod::Coverage .+
 
 =head1 SYNOPSIS
 
- use Require::HookChain prepend => 'use strict';
+ use Require::HookChain 'munge::prepend' => 'use strict';
 
 The above has a similar effect to:
 

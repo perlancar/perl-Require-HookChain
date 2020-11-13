@@ -1,6 +1,8 @@
 package Require::HookChain;
 
+# AUTHORITY
 # DATE
+# DIST
 # VERSION
 
 use strict;
@@ -10,7 +12,7 @@ use Scalar::Util qw(blessed);
 my $our_hook; $our_hook = sub {
     my ($self, $filename) = @_;
 
-    my $r = Require::HookChain::r->new;
+    my $r = Require::HookChain::r->new(filename => $filename);
     # find source code first
     for my $item (@INC) {
         next if ref $item;
@@ -80,8 +82,13 @@ sub import {
 package Require::HookChain::r;
 
 sub new {
-    my $class = shift;
-    bless {}, $class;
+    my ($class, %args) = @_;
+    bless \%args, $class;
+}
+
+sub filename {
+    my $self = shift;
+    $self->{filename};
 }
 
 sub src {
@@ -177,9 +184,18 @@ constructor as well as C<INC> handler.
 
 =head2 Methods
 
+=head3 filename
+
+Usage:
+
+ my $filename = $r->filename;
+
 =head3 src
 
-Usage: $r->src( [ $new_value ] ) => str
+Usage:
+
+ my $src = $r->src;
+ $r->src($new_src);
 
 Get or set source code content. Will return undef if source code has not been
 found or set.
