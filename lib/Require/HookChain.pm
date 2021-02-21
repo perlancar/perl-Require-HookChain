@@ -203,3 +203,5 @@ found or set.
 
 
 =head1 SEE ALSO
+
+L<RHC> for convenience of using on the command-line or one-liners.
