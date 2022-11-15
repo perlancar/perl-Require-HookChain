@@ -1,4 +1,10 @@
+## no critic: TestingAndDebugging::RequireUseStrict
 package Require::HookChain::munge::prepend;
+
+#IFUNBUILT
+use strict;
+use warnings;
+#END IFUNBUILT
 
 # AUTHORITY
 # DATE

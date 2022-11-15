@@ -1,3 +1,4 @@
+## no critic: TestingAndDebugging::RequireUseStrict
 package Require::HookChain::log::logger;
 
 # IFUNBUILT
@@ -37,7 +38,9 @@ sub Require::HookChain::log::logger::INC {
  # now each time we require(), a logging statement is produced at the trace level
 
 A demo (L<nauniq> is a Perl script you can get from CPAN, and
-L<Log::ger::Screen> is a module to show log statements on the terminal):
+L<Log::ger::Screen> is a module to show log statements on the terminal; note
+that the loading of L<strict>.pm and L<warnings>.pm are not logged because they
+are already loaded by C<Log::ger::Screen>):
 
  $ TRACE=1 PERL5OPT="-MLog::ger::Screen -MRequire::HookChain=log::logger" nauniq ~/samples/1.csv
  Require::HookChain::log::logger: Require-ing App/nauniq.pm (called from package main file /home/u1/perl5/perlbrew/perls/perl-5.34.0/bin/nauniq:7) ...

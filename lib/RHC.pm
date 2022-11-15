@@ -1,8 +1,11 @@
+## no critic: TestingAndDebugging::RequireUseStrict
 package RHC;
 use alias::module 'Require::HookChain';
 
 1;
 # ABSTRACT: Short alias for Require::HookChain
+
+=for Pod::Coverage ^(blessed)$
 
 =head1 SYNOPSIS
 

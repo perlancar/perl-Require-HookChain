@@ -1,13 +1,16 @@
+## no critic: TestingAndDebugging::RequireUseStrict
 package Require::HookChain::source::metacpan;
+
+#IFUNBUILT
+use strict;
+use warnings;
+#END IFUNBUILT
+use Log::ger;
 
 # AUTHORITY
 # DATE
 # DIST
 # VERSION
-
-use strict;
-use warnings;
-use Log::ger;
 
 use Require::Hook::Source::MetaCPAN;
 
