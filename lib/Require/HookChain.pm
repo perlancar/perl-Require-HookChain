@@ -214,6 +214,19 @@ Get or set source code content. Will return undef if source code has not been
 found or set.
 
 
+=head1 FAQ
+
+=head2 Loading a hook does nothing!
+
+Make sure you use a hook this way:
+
+ use Require::HookChain 'hookname'; # correct
+
+instead of:
+
+ use Require::HookChain::hookname; # INCORRECT
+
+
 =head1 SEE ALSO
 
 L<RHC> for convenience of using on the command-line or one-liners.
