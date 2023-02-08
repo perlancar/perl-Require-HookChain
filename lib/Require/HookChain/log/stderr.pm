@@ -23,7 +23,8 @@ sub Require::HookChain::log::stderr::INC {
     return () unless ref $r;
 
     my @caller = caller(1);
-    warn "Require::HookChain::log::stderr: Require-ing ".$r->filename." (called from package $caller[0] file $caller[1]:$caller[2]) ...\n";
+    my $elapsed = time() - $^T;
+    warn "[time +${elapsed}s] Require::HookChain::log::stderr: Require-ing ".$r->filename." (called from package $caller[0] file $caller[1]:$caller[2]) ...\n";
 }
 
 1;
