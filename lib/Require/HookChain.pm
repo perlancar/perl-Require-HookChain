@@ -192,6 +192,38 @@ To create your own chainable require hook, see example in L</"SYNOPSIS">. First
 you create a module under the C<Require::HookChain::*> namespace, then create a
 constructor as well as C<INC> handler.
 
+=head2 Subnamespace organization
+
+=over
+
+=item * Require::HookChain::filter::
+
+Hooks that filter module loading due to some criteria. These hooks can fail a
+module being loaded even though the source is available, if the additional
+criteria are not met.
+
+=item * Require::HookChain::log::
+
+Hooks that add logging to module loading process.
+
+=item * Require::HookChain::munge::
+
+Hooks that modify source code.
+
+=item * Require::HookChain::source::
+
+Hooks that allow loading module source from alternative sources.
+
+=item * Require::HookChain::test::
+
+Testing-related, particularly testing the Require::HookCHain hook module itself.
+
+=item * Require::HookChain::timestamp::
+
+Hooks that add timestamps during module loading process.
+
+=back
+
 
 =head1 Require::HookChain::r OBJECT
 
