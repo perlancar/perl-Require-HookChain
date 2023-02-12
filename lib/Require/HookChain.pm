@@ -196,6 +196,11 @@ constructor as well as C<INC> handler.
 
 =over
 
+=item * Require::HookChain::debug::
+
+Hooks that do debugging-related stuffs. See also: C<log::> subnamespace,
+C<timestamp::> subnamespace.
+
 =item * Require::HookChain::filter::
 
 Hooks that filter module loading due to some criteria. These hooks can fail a
@@ -204,7 +209,8 @@ criteria are not met.
 
 =item * Require::HookChain::log::
 
-Hooks that add logging to module loading process.
+Hooks that add logging to module loading process. See also: C<debug::>
+subnamespace.
 
 =item * Require::HookChain::munge::
 
