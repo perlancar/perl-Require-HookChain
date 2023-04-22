@@ -35,11 +35,15 @@ sub Require::HookChain::munge::prepend::INC {
 
 =head1 SYNOPSIS
 
- use Require::HookChain 'munge::prepend' => 'use strict';
+ use Require::HookChain 'munge::prepend' => 'use strict'; # the semicolon and newline is added automatically
 
 The above has a similar effect to:
 
  use everywhere 'strict';
+
+because it will prepend this line to each source code being loaded:
+
+ use strict;
 
 
 =head1 DESCRIPTION
