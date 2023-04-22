@@ -34,13 +34,13 @@ sub Require::HookChain::source::test::code::INC {
 
 In Perl code:
 
- use Require::HookChain 'source::test::code' => sub { my $r = shift; $r->src("1;\n") };
+ use Require::HookChain 'source::test::code' => sub { my $r = shift; $r->src("1;\n") unless defined $r->src };
  use Foo; # will use "1;\n" as source code even if the real Foo.pm is installed
 
 On the command-line:
 
  # will use code if Foo is not installed
- % perl -E'use RHC => -end =>1, "source::test::code" => sub { my $r = shift; $r->src("1;\n") }; use Foo; ...'
+ % perl -E'use RHC -end =>1, "source::test::code" => sub { my $r = shift; $r->src("1;\n") unless defined $r->src }; use Foo; ...'
 
 
 =head1 DESCRIPTION
