@@ -16,35 +16,35 @@ unless (defined &blessed) {
     *blessed = sub { my $arg = shift; my $ref = ref $arg; $ref && $ref !~ /\A(SCALAR|ARRAY|HASH|GLOB|Regexp)\z/ };
 }
 
+our $debug;
+
 my $our_hook; $our_hook = sub {
     my ($self, $filename) = @_;
 
-    my $r = Require::HookChain::r->new(filename => $filename);
-    # find source code first
-    for my $item (@INC) {
-        next if ref $item;
-        my $path = "$item/$filename";
-        if (-f $path) {
-            open my $fh, "<", $path
-                or die "Can't open $path: $!";
-            local $/;
-            $r->src(scalar <$fh>);
-            last;
-        }
-    }
+    warn "[Require::HookChain] require($filename) ...\n" if $debug;
 
-    my $after_us;
+    my $r = Require::HookChain::r->new(filename => $filename);
+
     for my $item (@INC) {
-        if (!$after_us) {
-            # start searching after ourself
-            if (ref($item) && $item == $our_hook) {
-                $after_us++;
+        my $ref = ref $item;
+
+        if (!$ref) {
+            # load from ordinary file
+            next if defined $r->src;
+
+            my $path = "$item/$filename";
+            if (-f $path) {
+                warn "[Require::HookChain] Loading $filename from $path ...\n" if $debug;
+                open my $fh, "<", $path
+                    or die "Can't open $path: $!";
+                local $/;
+                $r->src(scalar <$fh>);
+                close $fh;
                 next;
             }
-        } else {
-            if (blessed($item) && ref($item) =~ /\ARequire::HookChain::/) {
-                $item->INC($r);
-            }
+        } elsif ($ref =~ /\ARequire::HookChain::(.+)/) {
+            warn "[Require::HookChain] Calling hook $1 ...\n" if $debug;
+            $item->INC($r);
         }
     }
 
@@ -59,21 +59,46 @@ my $our_hook; $our_hook = sub {
 sub import {
     my $class = shift;
 
-    # install our own hook
+    # get early options first (-debug)
+    {
+        my $i = -1;
+        while ($i < @_) {
+            $i++;
+            if ($_[$i] eq '-debug') {
+                $debug = $_[$i+1];
+                $i++;
+                next;
+            } elsif ($_[$i] =~ /\A-/) {
+                $i++;
+                next;
+            } else {
+                last;
+            }
+        }
+    }
+
+    warn "[Require::HookChain] (Re-)installing our own hook at the beginning of \@INC ...\n"
+        if $debug;
     unless (@INC && blessed($INC[0]) && $INC[0] == $our_hook) {
         @INC = ($our_hook, grep { !(blessed($_) && $_ == $our_hook) } @INC);
     }
 
-    # get options first
+    # get the rest of the options and hook
     my $end;
     while (@_) {
         my $el = shift @_;
         if ($el eq '-end') {
             $end = shift @_;
             next;
+        } elsif ($el eq '-debug') {
+            # we've processed this
+            shift @_;
+            next;
         } else {
             my $pkg = "Require::HookChain::$el";
             (my $pkg_pm = "$pkg.pm") =~ s!::!/!g;
+            warn "[Require::HookChain] Installing hook $el to the ".($end ? "end":"beginning")." of \@INC, args (".join(",", @_).") ...\n"
+                if $debug;
             require $pkg_pm;
             my $c_hook = $pkg->new(@_);
             if ($end) {
@@ -188,6 +213,26 @@ This lets one chainable hook munge the result of the previous chainable hook.
 To create your own chainable require hook, see example in L</"SYNOPSIS">. First
 you create a module under the C<Require::HookChain::*> namespace, then create a
 constructor as well as C<INC> handler.
+
+=head2 Import options
+
+Options must be specified at the beginning, before specifying
+
+=over
+
+=item * -end
+
+Bool. If set to true, then hooks will be put at the end of C<@INC> instead of at
+the beginning (after Require::HookChain's own hook). Regardless,
+Require::HookChain's own hook will be put at the beginning to allow executing
+all the other hooks.
+
+=item * -debug
+
+Bool. If set to true, then debug messages will be printed to stderr.
+
+=back
+
 
 =head2 Subnamespace organization
 
