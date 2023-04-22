@@ -44,6 +44,7 @@ my $our_hook; $our_hook = sub {
             }
         } elsif ($ref =~ /\ARequire::HookChain::(.+)/) {
             warn "[Require::HookChain] Calling hook $1 ...\n" if $debug;
+            # currently return value is ignored
             $item->INC($r);
         }
     }
