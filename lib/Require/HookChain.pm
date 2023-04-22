@@ -9,15 +9,12 @@ package Require::HookChain;
 #IFUNBUILT
 use strict;
 use warnings;
-use Scalar::Util qw(blessed);
 #END IFUNBUILT
 
-# be minimalistic, to avoid loading any module
-#IFBUILT
-#unless (defined &blessed) {
-#    *blessed = sub { my $arg = shift; my $ref = ref $arg; $ref && $ref !~ /\A(SCALAR|ARRAY|HASH|GLOB|Regexp)\z/ };
-#}
-#END IFBUILT
+# be minimalistic, use our own blessed()
+unless (defined &blessed) {
+    *blessed = sub { my $arg = shift; my $ref = ref $arg; $ref && $ref !~ /\A(SCALAR|ARRAY|HASH|GLOB|Regexp)\z/ };
+}
 
 my $our_hook; $our_hook = sub {
     my ($self, $filename) = @_;
