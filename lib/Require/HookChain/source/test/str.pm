@@ -48,7 +48,11 @@ On the command-line:
 
 =head1 DESCRIPTION
 
-This is a test hook.
+This is a test hook to load a constant string as source code of modules you are
+loading. You can also achieve the same effect by directly installing an C<@INC>
+hook without the L<Require::HookChain> framework like this:
+
+ unshift @INC, sub { \"some string" };
 
 
 =head1 SEE ALSO
