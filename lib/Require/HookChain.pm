@@ -136,7 +136,7 @@ sub src {
 }
 
 1;
-# ABSTRACT: Chainable require hook
+# ABSTRACT: Chainable require hooks
 
 =for Pod::Coverage ^(blessed)$
 
@@ -172,10 +172,11 @@ In a code to use this hook:
  use Require::HookChain 'munge::prepend' => 'use strict';
  use Foo::Bar; # Foo/Bar.pm will be loaded with added 'use strict;' at the start
 
-Install another hook, but put it at the end of C<@INC> instead of at the
+Install other hooks, but put it at the end of C<@INC> instead of at the
 beginning:
 
  use Require::HookChain -end => 1, append => 'some code';
+ use Require::HookChain 'log::stderr'; # log each loading of module to stderr
 
 
 =head1 DESCRIPTION
