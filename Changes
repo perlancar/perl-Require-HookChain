@@ -1,3 +1,13 @@
+0.014   2023-05-03  Released-By: PERLANCAR; Urgency: low
+
+        - No functional changes.
+
+        - [doc] Fix POD formatting.
+
+        - [doc] Tweak Synopsis to make it clearer that you can install multiple
+          other hooks and they all work.
+
+
 0.013   2023-04-22  Released-By: PERLANCAR; Urgency: medium
 
         - Add hook: source::test::code.
