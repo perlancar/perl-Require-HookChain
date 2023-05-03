@@ -39,7 +39,7 @@ sub Require::HookChain::test::noop_all::INC {
 
 For testing only.
 
-This hook returns a source code of C<<1;>> for all modules, effectively making
+This hook returns a source code of C<< 1; >> for all modules, effectively making
 all module loading a no-op. On subsequent loading for a module, perl sees that
 the source code has been applied and will not load the source again, which is
 the regular "no-op" upon re-loading a module.
