@@ -149,18 +149,28 @@ F<Require/HookChain/munge/prepend.pm>:
  package Require::HookChain::munge::prepend;
 
  sub new {
+
+     # our hook accepts one argument: preamble (the string to be prepended)
      my ($class, $preamble) = @_;
+
      bless { preamble => $preamble }, $class;
  }
 
  sub Require::HookChain::munge::prepend::INC {
+
+     # instead a filename like a reguler hook, an hook's INC is called by
+     # Require::HookChain's main INC and will be passed $r stash
      my ($self, $r) = @_;
 
      # safety, in case we are not called by Require::HookChain
      return () unless ref $r;
 
      my $src = $r->src;
+
+     # we only munge source code, when source code has not been loaded by other
+     # hooks, we decline.
      return unless defined $src;
+
      $src = "$self->{preamble};\n$src";
      $r->src($src);
  }
