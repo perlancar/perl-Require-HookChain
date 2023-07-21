@@ -11,7 +11,7 @@ use strict;
 use warnings;
 #END IFUNBUILT
 
-# be minimalistic, use our own blessed()
+# be minimalistic, use our own blessed() so we don't have to load any module (in this case, Scalar::Util)
 unless (defined &blessed) {
     *blessed = sub { my $arg = shift; my $ref = ref $arg; $ref && $ref !~ /\A(SCALAR|ARRAY|HASH|GLOB|Regexp)\z/ };
 }
