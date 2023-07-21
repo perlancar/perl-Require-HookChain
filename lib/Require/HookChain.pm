@@ -270,6 +270,14 @@ subnamespace.
 
 Hooks that modify source code.
 
+=item * Require::HookChain::postcheck::
+
+Hooks that perform checks after the source code is loaded (eval-ed).
+
+=item * Require::HookChain::precheck::
+
+Hooks that perform checks before the source code is loaded (eval-ed).
+
 =item * Require::HookChain::source::
 
 Hooks that allow loading module source from alternative sources.
