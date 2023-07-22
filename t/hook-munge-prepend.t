@@ -2,18 +2,22 @@
 
 use strict;
 use warnings;
-use FindBin '$Bin';
 use Test::More 0.98;
 
 {
     # remove all hooks first
     local @INC = grep { !ref } @INC;
-    unshift @INC, "$Bin/lib";
     require Require::HookChain;
     Require::HookChain->import("munge::prepend", 'our $main::foo=2;');
 
+    # then remove all Require::HookChainTest::* modules from %INC
+    for (keys %INC) { delete $INC{$_} if m!^Require/HookChainTest/! }
+
+    # now the tests ...
+
     undef $main::foo;
-    require Local::Foo;
-    diag explain \%INC;
+    require Require::HookChainTest::One;
     is($main::foo, 2);
 }
+
+done_testing;

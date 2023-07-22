@@ -255,12 +255,6 @@ Bool. If set to true, then debug messages will be printed to stderr.
 Hooks that do debugging-related stuffs. See also: C<log::> subnamespace,
 C<timestamp::> subnamespace.
 
-=item * Require::HookChain::filter::
-
-Hooks that filter module loading due to some criteria. These hooks can fail a
-module being loaded even though the source is available, if the additional
-criteria are not met.
-
 =item * Require::HookChain::log::
 
 Hooks that add logging to module loading process. See also: C<debug::>
@@ -272,11 +266,13 @@ Hooks that modify source code.
 
 =item * Require::HookChain::postcheck::
 
-Hooks that perform checks after the source code is loaded (eval-ed).
+Hooks that perform checks after the source code is loaded (eval-ed). See also
+C<precheck::> subnamespace.
 
 =item * Require::HookChain::precheck::
 
 Hooks that perform checks before the source code is loaded (eval-ed).
+See also C<postcheck::> subnamespace.
 
 =item * Require::HookChain::source::
 
