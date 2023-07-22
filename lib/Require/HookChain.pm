@@ -105,6 +105,7 @@ sub import {
             if ($end) {
                 push @INC, $c_hook;
             } else {
+                # install the hook after uss
                 splice @INC, 1, 0, $c_hook;
             }
             last;
@@ -246,6 +247,42 @@ Bool. If set to true, then debug messages will be printed to stderr.
 =back
 
 
+=head2 Hook ordering
+
+The order of execution of hooks by Require::HookChain is by their order in
+C<@INC>, so you should set the ordering yourself by way of the (reverse)
+ordering of C<< use Require::HookChain >> statements. Each time you do this:
+
+ use Require::HookChain 'hook1';
+
+then Require::HookChain will (re)install its own hook to the beginning of
+C<@INC>, then insert C<hook1> as the second element in C<@INC>. Then when you
+load another hook:
+
+ use Require::HookChain 'hook2';
+
+then Require::HookChain will (re)install its own hook to the beginning of
+C<@INC>, then insert C<hook2> as the second element in C<@INC>, while C<hook1>
+will be at the third element of C<@INC>. So the order of hook execution will be:
+C<< hook2, hook1 >>. When another hook, C<hook3>, is loaded afterwards, the
+order of execution will be C<< hook3, hook2, hook1 >>.
+
+Some hooks should be loaded at the end of other hooks (and sources), e.g.
+L<debug::dump_source::stderr|Require::HookChain::debug::dump_source::stderr>, so
+you should install such hooks using something like:
+
+ use Require::HookChain -end=>1, 'hook4';
+
+in which case Require::HookChain will again (re)install its own hook to the
+beginning of C<@INC>, then insert C<hook4> as the last element in C<@INC>. The
+order of execution of hooks will then be: C<< hook3, hook2, hook1, hook4 >>. If
+you install another hook at the end:
+
+ use Require::HookChain -end=>1, 'hook5';
+
+then the order of execution of hooks will then be: C<< hook3, hook2, hook1,
+hook4, hook5 >>.
+
 =head2 Subnamespace organization
 
 =over
@@ -320,9 +357,16 @@ Make sure you use a hook this way:
 
 instead of:
 
- use Require::HookChain::hookname; # INCORRECT
+ use Require::HookChain::hookname; # INCORRECT, this does not install the hook to @INC
+
+=head2 The order of execution of hooks is incorrect!
+
+You control the ordering by putting the hooks in C<@INC> in your preferred
+order. See L</"Hook ordering"> for more details.
 
 
 =head1 SEE ALSO
 
 L<RHC> for convenience of using on the command-line or one-liners.
+
+L<Require::Hook> is an older framework and is superseded by Require::HookChain.q

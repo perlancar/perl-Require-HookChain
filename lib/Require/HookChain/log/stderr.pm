@@ -55,6 +55,21 @@ A demo (L<nauniq> is a Perl script you can get from CPAN):
 
 =head1 DESCRIPTION
 
+This hook should be put at the beginning to be able to log before other hooks or
+source loads the module, so it's best to require this hook last, e.g.:
+
+ use Require::HookChain 'other::hook';
+ use Require::HookChain 'other::hook2';
+ ...
+ use Require::HookChain 'log::stderr';
+
+or:
+
+ use Require::HookChain 'log::stderr';
+ use Require::HookChain -end=>1, 'other::hook';
+ use Require::HookChain -end=>1, 'other::hook2';
+ ...
+
 
 =head1 SEE ALSO
 
