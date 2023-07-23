@@ -63,7 +63,10 @@ You might've installed the hook like this:
 
 in which case the hook is installed at the beginning of C<@INC> (after RHC's own
 hook). When a user C<require>'s a module, by the time the C<munge::prepend> hook
-runs, the source code is not yet available.
+runs, the source code is not yet available. You'll want to install the hook at
+the end of C<@INC> so other sources and hooks provide the source code first:
+
+ use Require::HookChain -end=>1, 'munge::prepend' => '...';
 
 
 =head1 SEE ALSO
