@@ -1,5 +1,7 @@
 package Require::HookChainTest::Two;
 
+use strict;
+
 # AUTHORITY
 # DATE
 # DIST
