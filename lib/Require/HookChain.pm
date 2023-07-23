@@ -364,9 +364,45 @@ instead of:
 You control the ordering by putting the hooks in C<@INC> in your preferred
 order. See L</"Hook ordering"> for more details.
 
+=head2 What are the differences between Require::HookChain and Require::HookPlugin?
+
+=for BEGIN_BLOCK:rhc_vs_rhp
+
+Require::HookChain (RHC) and Require::HookPlugin (RHP) are both frameworks to
+add custom behavior to the module loading process. The following are the
+comparison between the two:
+
+RHC and RHP both work by installing its own handler (a coderef) at the beginning
+of C<@INC>. They then evaluate the rest of C<@INC> like Perl does, with some
+differences.
+
+Perl stops at the first C<@INC> element where it finds the source code, while
+RHC's handler evaluates all the entries of C<@INC> looking for hooks in the form
+of objects of the class under the C<Require::HookChain::> namespace.
+
+RHP's plugins, on the other hand, are not installed directly in C<@INC> but at
+another array (C<@Require::HookPlugin::Plugin_Instances>), so the only entry
+installed in C<@INC> is RHP's own handler.
+
+RHC evaluates hooks in C<@INC> in order, so you have to install the hooks in the
+right order to get the correct behavior. On the other hand, RHP evaluates
+plugins based on events, plugins' priority, and activation order. Plugins have a
+default priority value (though you can override it). In general you can activate
+plugins in whatever order and generally they will do the right thing. RHP is
+more flexible and powerful than RHC, but is slightly more complex.
+
+Writing hooks for RHC (or plugins for RHP) are roughly equally easy.
+
+=for END_BLOCK:rhc_vs_rhp
+
 
 =head1 SEE ALSO
 
 L<RHC> for convenience of using on the command-line or one-liners.
 
-L<Require::Hook> is an older framework and is superseded by Require::HookChain.q
+L<Require::Hook> (RH) is an older framework and is superseded by
+Require::HookChain (RHC).
+
+L<Require::HookPlugin> (RHP) is a newer framework that aims to be more flexible
+and comes with sensible default of ordering, to avoid the trap of installing
+hooks at the wrong order. RHP might supersede RHC in the future.
