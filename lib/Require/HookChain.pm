@@ -180,13 +180,13 @@ F<Require/HookChain/munge/prepend.pm>:
 
 In a code to use this hook:
 
- use Require::HookChain 'munge::prepend' => 'use strict';
+ use Require::HookChain -end=>1, 'munge::prepend' => 'use strict';
  use Foo::Bar; # Foo/Bar.pm will be loaded with added 'use strict;' at the start
 
 Install other hooks, but put it at the end of C<@INC> instead of at the
 beginning:
 
- use Require::HookChain -end => 1, append => 'some code';
+ use Require::HookChain -end=>1, 'munge::append' => 'some code';
  use Require::HookChain 'log::stderr'; # log each loading of module to stderr
 
 

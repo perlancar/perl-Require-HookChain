@@ -21,7 +21,7 @@ sub Require::HookChain::test::noop_all::INC {
     my ($self, $r) = @_;
 
     #print "Loading ", $r->filename, " ...\n";
-    $self->src("1;");
+    $r->src("1;");
 }
 
 1;

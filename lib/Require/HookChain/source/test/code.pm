@@ -22,7 +22,8 @@ sub Require::HookChain::source::test::code::INC {
     # safety, in case we are not called by Require::HookChain
     return () unless ref $r;
 
-    $self->{code}->($r);
+    $r->src($self->{code}->($r));
+    1;
 }
 
 1;
