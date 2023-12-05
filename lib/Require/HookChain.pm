@@ -143,6 +143,9 @@ sub src {
 
 =head1 SYNOPSIS
 
+B<NOTE:> Please see L<Require::HookPlugin> instead which will supersede this
+project.
+
 Say you want to create a require hook to prepend some code to the module source
 code that is loaded. In your hook source, in
 F<Require/HookChain/munge/prepend.pm>:
